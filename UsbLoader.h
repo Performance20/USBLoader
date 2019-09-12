@@ -59,6 +59,8 @@ protected:
 	wxButton* m_buttonEnde;
 	wxStatusBar* m_statusBar1;
 
+	//test
+
 public:
 
 	//HauptFenster( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_FRAME_STYLE|wxRESIZE_BORDER|wxSYSTEM_MENU|wxTAB_TRAVERSAL );
