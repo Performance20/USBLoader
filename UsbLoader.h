@@ -59,7 +59,6 @@ protected:
 	wxButton* m_buttonEnde;
 	wxStatusBar* m_statusBar1;
 
-	//test
 
 public:
 

@@ -30,24 +30,24 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	vbox1 = new wxBoxSizer(wxVERTICAL);
 
 	wxBoxSizer* hSizer1 = new wxBoxSizer(wxHORIZONTAL);
-	m_staticText1 = new wxStaticText(m_panel, wxID_ANY, wxT("Eingabe: "));
+	m_staticText1 = new wxStaticText(this, wxID_ANY, wxT("Eingabe: "));
 	hSizer1->Add(m_staticText1, 0, wxRIGHT, 8);
 	
-	m_textCtrlEingabe = new wxTextCtrl(m_panel, wxID_ANY);
+	m_textCtrlEingabe = new wxTextCtrl(this, wxID_ANY);
 	hSizer1->Add(m_textCtrlEingabe, 1);
 
 	vbox1->Add(hSizer1, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 10);
 	vbox1->Add(-1,15);
 
 	wxBoxSizer* hSizer4 = new wxBoxSizer(wxHORIZONTAL);
-	m_staticText2 = new wxStaticText(m_panel, wxID_ANY, wxT("Ausgabe: "));
+	m_staticText2 = new wxStaticText(this, wxID_ANY, wxT("Ausgabe: "));
 	hSizer4->Add(m_staticText2, 0, wxRIGHT, 8);
 	vbox1->Add(hSizer4, 0, wxLEFT | wxRIGHT, 10);
 	
 	vbox1->Add(-1, 10);
 
 	wxBoxSizer* hSizer2 = new wxBoxSizer(wxHORIZONTAL);
-	m_textCtrlAusgabe = new wxTextCtrl(m_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), wxTE_LEFT|wxTE_MULTILINE);
+	m_textCtrlAusgabe = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), wxTE_LEFT|wxTE_MULTILINE);
 	hSizer2->Add(m_textCtrlAusgabe, 1, wxEXPAND);
 
 	vbox1->Add(hSizer2, 1, wxEXPAND | wxLEFT | wxRIGHT, 10);
@@ -57,10 +57,10 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	wxBoxSizer* hSizer3;
 	hSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
-	m_buttonConnect = new wxButton(m_panel, ID_USBINT, wxT("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonConnect = new wxButton(this, ID_USBINT, wxT("Connect"), wxDefaultPosition, wxDefaultSize, 0 );
 	hSizer3->Add(m_buttonConnect, 0, wxRIGHT | wxBOTTOM, 20);
 
-	m_buttonEnde = new wxButton(m_panel, ID_EXIT, wxT("Ende"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonEnde = new wxButton(this, ID_EXIT, wxT("Ende"), wxDefaultPosition, wxDefaultSize, 0 );
 	hSizer3->Add( m_buttonEnde, 0, wxLEFT | wxBOTTOM, 20 );
 
 	vbox1->Add(hSizer3, 0, wxALIGN_RIGHT | wxRIGHT, 10);
