@@ -44,6 +44,11 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	wxBoxSizer* hSizer4 = new wxBoxSizer(wxHORIZONTAL);
 	m_staticText2 = new wxStaticText(m_panel, wxID_ANY, wxT("Ausgabe: "));
 	hSizer4->Add(m_staticText2, 0, wxRIGHT, 8);
+	//hSizer4->Add(0, 0, 1, wxEXPAND, 5);
+	//m_checkBox1 = new wxCheckBox(m_panel, wxID_ANY, wxT("LED an"), wxDefaultPosition, wxDefaultSize, 0);
+	//m_checkBox1->SetValue(true);
+	//hSizer4->Add(m_checkBox1, 0, wxALL, 5);
+
 	vbox1->Add(hSizer4, 0, wxLEFT | wxRIGHT, 10);
 	
 	vbox1->Add(-1, 10);
@@ -56,6 +61,14 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 
 	vbox1->Add(-1, 10);
 
+	wxBoxSizer* hSizer5 = new wxBoxSizer(wxHORIZONTAL);
+	m_checkBox1 = new wxCheckBox(m_panel, ID_CHECK_LED, wxT("LED an"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
+	m_checkBox1->SetValue(true);
+	hSizer5->Add(m_checkBox1, 0, wxRIGHT, 5);
+	vbox1->Add(hSizer5, 0,  wxLEFT | wxRIGHT, 10);
+	
+	vbox1->Add(-1, 10);
+	
 	wxBoxSizer* hSizer3;
 	hSizer3 = new wxBoxSizer(wxHORIZONTAL);
 
@@ -66,6 +79,7 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	hSizer3->Add( m_buttonEnde, 0, wxLEFT | wxBOTTOM, 20 );
 
 	vbox1->Add(hSizer3, 0, wxALIGN_RIGHT | wxRIGHT, 10);
+	
 
 	m_panel->SetSizer(vbox1);
 
@@ -77,6 +91,8 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	
 	Connect(ID_USBINT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(HauptFenster::trackUSBInterfaceClick));
 	Connect(ID_EXIT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(HauptFenster::OnExitClick));
+	Connect(ID_CHECK_LED, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(HauptFenster::LEDToggle));
+
 
 	digiSpark = new USBDevice();
 
@@ -92,6 +108,7 @@ HauptFenster::~HauptFenster()
 void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 {
 	wxString m;
+	int led;
 
 	wxStreamToTextRedirector redirect(m_textCtrlAusgabe);
 	fininish = false;
@@ -100,6 +117,12 @@ void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 	cout << digiSpark->getLog();
 	cout << digiSpark->print_deviceList();
 	cout << digiSpark->getLog();
+	led = digiSpark->getLED();
+	if (led)
+		m_checkBox1->SetValue(true);
+	else
+		m_checkBox1->SetValue(false);
+	
 	while (fininish == false) {
 		cout << digiSpark->readString();
 		cout << digiSpark->getLog();
@@ -117,3 +140,15 @@ void HauptFenster::OnExitClick(wxCommandEvent& event)
 	Close(TRUE); // Tells the OS to quit running this process
 }
 
+void HauptFenster::LEDToggle(wxCommandEvent& event)
+{
+	if (event.IsChecked())
+	{
+		digiSpark->setLED_on();
+	}
+	else
+	{
+		digiSpark->setLED_off();
+	}
+
+}

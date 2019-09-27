@@ -61,9 +61,6 @@ protected:
 	int reset_device();
 
 
-
-
-
 public:
 	USBDevice(uint16_t _vendor_id, uint16_t _product_id);
 	USBDevice(uint16_t _vendor_id, uint16_t _product_id, std::ostringstream& iout);
@@ -84,7 +81,7 @@ public:
 	int setLED(int val);
 	int setLED_on();
 	int setLED_off();
-
+	int getLED();
 };
 
 
