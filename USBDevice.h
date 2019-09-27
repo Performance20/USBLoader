@@ -5,6 +5,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "protocol.h"
+
 using namespace std;
 
 
@@ -51,8 +53,9 @@ protected:
 	std::string print_device(libusb_device* dev, int level);
 	int find_device(libusb_device* dev, int level, libusb_device_handle** handleusb, std::string& sout);
 	int claim_device(libusb_device* dev, int level, libusb_device_handle** handleusb);
-	const char* libusb_error_text(int err_number);
-	int readUSB(const unsigned char* data);
+	const char* libusb_error_text(ssize_t err_number);
+	int readUSBhid(const unsigned char* data);
+	int readUSBVendor(const unsigned char* data);
 	int writeUSB(const unsigned char* data);
 	void init();
 	int reset_device();
@@ -76,8 +79,11 @@ public:
 	void writeln(std::string a);
 	void write(std::string a);
 	void writeByte(signed char b);
-	std::string read();
+	std::string readString();
 	std::string getLog();
+	int setLED(int val);
+	int setLED_on();
+	int setLED_off();
 
 };
 

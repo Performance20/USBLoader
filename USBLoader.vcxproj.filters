@@ -35,5 +35,8 @@
     <ClInclude Include="USBDevice.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="protocol.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

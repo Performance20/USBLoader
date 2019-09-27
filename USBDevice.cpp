@@ -286,7 +286,7 @@ int USBDevice::claim_device(libusb_device* dev, int level, libusb_device_handle*
 }
 
 
-int  USBDevice::readUSB(const unsigned char* data)
+int  USBDevice::readUSBhid(const unsigned char* data)
 {
 			int status;
 
@@ -298,13 +298,64 @@ int  USBDevice::readUSB(const unsigned char* data)
 				if (status < 0) {
 					*out << endl << libusb_error_name(status) << endl << ends;
 					reset_device();
-					return status;
+					return 0;
 				}
 				else
-					return 0;
+					return status;
 			}
-			return 1;
+			return 0;
 		}
+
+int  USBDevice::readUSBVendor(const unsigned char* data)
+{
+	int status;
+
+	if (connected == true) {
+		//status = libusb_control_transfer(device, (0x01 << 5) | 0x80, 0x01, 0, 0, (unsigned char*) data, 1, 1000);
+		status = libusb_control_transfer(handle, LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_RECIPIENT_DEVICE | LIBUSB_ENDPOINT_IN, 
+			REQ_LOGGING, 0, 0, (unsigned char*) data, 1, TIMEOUT);
+
+		if (status < 0) {
+			*out << endl << libusb_error_name(status) << endl << ends;
+			reset_device();
+			return 0;
+		}
+		else
+			return status;
+	}
+	return 0;
+}
+
+
+int USBDevice::USBDevice::setLED(int val)
+{
+	int status;
+
+	if (connected == true) {
+		//status = libusb_control_transfer(device, (0x01 << 5) | 0x80, 0x01, 0, 0, (unsigned char*) data, 1, 1000);
+		status = libusb_control_transfer(handle, LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_RECIPIENT_DEVICE | LIBUSB_ENDPOINT_OUT,
+			REQ_ONBOARD_LED_SET, val, 0, 0, 0, TIMEOUT);
+
+		if (status < 0) {
+			*out << endl << libusb_error_name(status) << endl << ends;
+			reset_device();
+			return status;
+		}
+		else
+			return status;
+	}
+	return -1;
+}
+
+inline int USBDevice::setLED_off(void)
+{
+	return setLED(VAL_ONBOARD_LED_OFF);
+}
+
+inline int USBDevice::setLED_on(void)
+{
+	return setLED(VAL_ONBOARD_LED_ON);
+}
 
 int  USBDevice::writeUSB(const unsigned char* data)
 {
@@ -325,7 +376,7 @@ int  USBDevice::writeUSB(const unsigned char* data)
 }
 
 
-		const char* USBDevice::libusb_error_text(int err_number) {
+		const char* USBDevice::libusb_error_text(ssize_t err_number) {
 			switch (err_number) {
 			case 0:
 				return "LIBUSB_SUCCESS";
@@ -394,7 +445,6 @@ void USBDevice::writeln(std::string a) {
 }
 
 
-
 void USBDevice::writeByte(signed char b) {
 
 }
@@ -403,7 +453,7 @@ void write(std::string a) {
 
 }
 
-std::string USBDevice::read() { // blocking reading
+std::string USBDevice::readString() { // blocking reading
 			
 	unsigned char c;
 	std::string ss("");
@@ -412,19 +462,21 @@ std::string USBDevice::read() { // blocking reading
 	if (connected == true)
 	{
 		while (loopcnt == true) {
-			if (this->readUSB(&c) >= 0)
+			if (this->readUSBVendor(&c))
 			{
 				switch (c) {
-				case 205: loopcnt = false; break;
-				case 204: loopcnt = false; break;
-				case 10:  break;
-				default: ss += c;
+				case 0:		loopcnt = false; break;
+				default:	ss += c;
 				};
+
 			}
+			else
+				loopcnt = false;
 		}
 	}
 	return ss;
 }
+
 		
 std::string USBDevice::getLog() {
 	

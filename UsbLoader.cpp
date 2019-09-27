@@ -101,7 +101,7 @@ void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 	cout << digiSpark->print_deviceList();
 	cout << digiSpark->getLog();
 	while (fininish == false) {
-		cout << digiSpark->read();
+		cout << digiSpark->readString();
 		cout << digiSpark->getLog();
 		wxYield();
 	}
