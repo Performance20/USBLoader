@@ -91,14 +91,23 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\helge\Documents\Visual Studio 2019\libusb\libusb-master\libusb;C:\Users\helge\Documents\Visual Studio 2019\wxWidgets\lib\vc_x64_dll\mswud;C:\Users\helge\Documents\Visual Studio 2019\wxWidgets\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Helge\source\repos\libusb\libusb;C:\Users\Helge\source\repos\wxWidgets\lib\vc_x64_dll\mswud;C:\Users\Helge\source\repos\wxWidgets\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WXUSINGDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\helge\Documents\Visual Studio 2019\libusb\libusb-master\x64\Debug\dll;C:\Users\helge\Documents\Visual Studio 2019\wxWidgets\lib\vc_x64_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Helge\source\repos\libusb\x64\Debug\dll;C:\Users\Helge\source\repos\wxWidgets\lib\vc_x64_dll;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libusb-1.0.lib;wxbase31ud.lib;wxmsw31ud_core.lib;libusb-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "C:\Users\Helge\source\repos\libusb\x64\Debug\dll\libusb-1.0.dll" "$(OutDir)"
+xcopy /y /d "C:\Users\Helge\source\repos\wxWidgets\lib\vc_x64_dll\wxbase315ud_vc_x64_custom.dll" "$(OutDir)"
+xcopy /y /d "C:\Users\Helge\source\repos\wxWidgets\lib\vc_x64_dll\wxmsw315ud_core_vc_x64_custom.dll" "$(OutDir)"
+</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>dll's hinzufügen</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
