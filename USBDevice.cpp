@@ -114,7 +114,7 @@ std::string USBDevice::print_device(libusb_device* dev, int level)
 	unsigned char strBuffer[256];
 	int ret;
 	unsigned int i, ii;
-	std::ostringstream  m, m1, mout;
+	std::ostringstream  m1, mout;
 	std::string ss("");
 
 
@@ -355,8 +355,8 @@ int USBDevice::setLED_off(void)
 
 int USBDevice::getLED()
 {
-	int status, ret =0;
-	unsigned char data[1] , c;
+	int status, ret = 0;
+	unsigned char data[1];
 
 	if (connected == true) {
 		//status = libusb_control_transfer(device, (0x01 << 5) | 0x80, 0x01, 0, 0, (unsigned char*) data, 1, 1000);
