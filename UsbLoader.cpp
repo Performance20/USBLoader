@@ -19,7 +19,7 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	col1.Set(wxT("#4f5049"));
 	col2.Set(wxT("#ededed"));
 
-	this->SetMinSize(wxSize(500, 600));//   SetItemMinSize(this, 600, 600);
+	this->SetMinSize(wxSize(600, 600));//   SetItemMinSize(this, 600, 600);
 
 	//this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	//this->SetSizeHints(500, 510);
@@ -49,8 +49,13 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	//m_checkBox1->SetValue(true);
 	//hSizer4->Add(m_checkBox1, 0, wxALL, 5);
 
-	vbox1->Add(hSizer4, 0, wxLEFT | wxRIGHT, 10);
+	m_buttonCleanlog = new wxButton(m_panel, ID_CLEANLOG, wxT("Leeren"), wxDefaultPosition, wxDefaultSize, 0);
+	hSizer4->Add(m_buttonCleanlog, 0, wxLEFT , 420);
 	
+	//vbox1->Add(hSizer4, 0, wxALIGN_RIGHT | wxRIGHT, 10);
+	vbox1->Add(hSizer4, 0,  wxLEFT | wxRIGHT, 10);
+	//vbox1->Add(hSizer4, 0, wxALL, 5);
+
 	vbox1->Add(-1, 10);
 
 	wxBoxSizer* hSizer2 = new wxBoxSizer(wxHORIZONTAL);
@@ -63,7 +68,7 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 
 	wxBoxSizer* hSizer5 = new wxBoxSizer(wxHORIZONTAL);
 	m_checkBox1 = new wxCheckBox(m_panel, ID_CHECK_LED, wxT("LED an"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-	m_checkBox1->SetValue(true);
+	m_checkBox1->SetValue(false);
 	hSizer5->Add(m_checkBox1, 0, wxRIGHT, 5);
 	vbox1->Add(hSizer5, 0,  wxLEFT | wxRIGHT, 10);
 	
@@ -85,43 +90,66 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 
 	this->Layout();
 
-	m_statusBar1 = this->CreateStatusBar( 1, wxSTB_SIZEGRIP, wxID_ANY );
+	m_statusBar1 = this->CreateStatusBar( 3, wxSTB_SIZEGRIP, wxID_ANY );
+
+	m_Gauge = new wxGauge(m_statusBar1, wxID_ANY, 100, wxPoint(5, -1));
+	m_Gauge->SetSize(150, 15);
+	//m_Gauge->CenterOnParent(wxGA_HORIZONTAL | wxGA_SMOOTH | wxGA_VERTICAL);
+	m_Gauge->CenterOnParent(wxGA_SMOOTH | wxGA_VERTICAL);
+
+	m_Timer = new wxTimer(this, ID_TIMER);
+	if (m_Timer->Start(300, false) == false)
+	{
+		wxMessageBox("Could not start Timer!");
+	}
+	
+	this->SetStatusText("nicht verbunden", 2);
 
 	this->Centre();
 	
-	Connect(ID_USBINT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(HauptFenster::trackUSBInterfaceClick));
-	Connect(ID_EXIT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(HauptFenster::OnExitClick));
-	Connect(ID_CHECK_LED, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(HauptFenster::LEDToggle));
-
+	this->Connect(ID_USBINT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(HauptFenster::trackUSBInterfaceClick));
+	this->Connect(ID_EXIT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(HauptFenster::OnExitClick));
+	this->Connect(ID_CHECK_LED, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(HauptFenster::LEDToggle));
+	this->Connect(ID_CLEANLOG, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(HauptFenster::CleanOutputLogClick));
+	this->Connect(ID_TIMER, wxEVT_TIMER, wxTimerEventHandler(HauptFenster::OnTimerEvent));
 
 	digiSpark = new USBDevice();
-
-
 }
 
 HauptFenster::~HauptFenster()
 {
 	delete digiSpark;
+	delete m_Timer;
 }
 
 
 void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 {
-	wxString m;
+	wxString m, s;
 	int led;
 
 	wxStreamToTextRedirector redirect(m_textCtrlAusgabe);
 	fininish = false;
 	connected = true;
 	digiSpark->connect_device();
-	cout << digiSpark->getLog();
-	cout << digiSpark->print_deviceList();
-	cout << digiSpark->getLog();
-	led = digiSpark->getLED();
-	if (led)
-		m_checkBox1->SetValue(true);
+
+	if (digiSpark->isConnected())
+	{
+		s << "verbunden";
+		led = digiSpark->getLED();
+		if (led)
+			m_checkBox1->SetValue(true);
+		else
+			m_checkBox1->SetValue(false);
+	}
 	else
-		m_checkBox1->SetValue(false);
+	{
+		s << "nicht verbunden";
+		cout << digiSpark->getLog();
+		cout << digiSpark->print_deviceList();
+		cout << digiSpark->getLog();
+	}
+	this->SetStatusText(s, 2);
 	
 	while (fininish == false) {
 		cout << digiSpark->readString();
@@ -151,4 +179,22 @@ void HauptFenster::LEDToggle(wxCommandEvent& event)
 		digiSpark->setLED_off();
 	}
 
+}
+
+void HauptFenster::OnTimerEvent(wxTimerEvent& event)
+{
+	if (m_Gauge)
+	{
+		int value = m_Gauge->GetValue() + 1;
+		if (value == 100) value = 0;
+		m_Gauge->SetValue(value);
+		wxString s;
+		s << value;
+		this->SetStatusText(s, 1);
+	}
+}
+
+void HauptFenster::CleanOutputLogClick(wxCommandEvent& event)
+{
+	this->m_textCtrlAusgabe->Clear();
 }

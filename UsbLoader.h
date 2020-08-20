@@ -37,6 +37,8 @@ using namespace std;
 const int ID_USBINT = wxID_HIGHEST + 1;
 const int ID_EXIT = wxID_HIGHEST + 2;
 const int ID_CHECK_LED = wxID_HIGHEST + 3;
+const int ID_TIMER = wxID_HIGHEST + 4;
+const int ID_CLEANLOG = wxID_HIGHEST + 5;
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class HauptFenster
@@ -53,6 +55,7 @@ protected:
 	wxPanel* m_panel;
 	wxPanel* midPan;
 	wxTextCtrl* m_textCtrlAusgabe;
+	wxButton* m_buttonCleanlog;
 	wxTextCtrl* m_textCtrlEingabe;
 	wxStaticText* m_staticText1;
 	wxStaticText* m_staticText2;
@@ -60,6 +63,8 @@ protected:
 	wxButton* m_buttonEnde;
 	wxStatusBar* m_statusBar1;
 	wxCheckBox* m_checkBox1;
+	wxTimer* m_Timer;
+	wxGauge* m_Gauge;
 
 
 public:
@@ -70,6 +75,7 @@ public:
 	void trackUSBInterfaceClick(wxCommandEvent& event);
 	void OnExitClick(wxCommandEvent& event);
 	void LEDToggle(wxCommandEvent& event);
-
+	void OnTimerEvent(wxTimerEvent& event);
+	void CleanOutputLogClick(wxCommandEvent& event);
 };
 

@@ -82,6 +82,10 @@ public:
 	int setLED_on();
 	int setLED_off();
 	int getLED();
+	bool isConnected();
 };
 
-
+inline bool USBDevice::isConnected()
+{
+	return connected;
+}
