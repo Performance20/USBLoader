@@ -1,13 +1,5 @@
-///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Aug 31 2019)
-// http://www.wxformbuilder.org/
-//
-// PLEASE DO *NOT* EDIT THIS FILE!
-///////////////////////////////////////////////////////////////////////////
-
 #include "UsbLoader.h" 
 
-//////////////////////////////////////////////////////////////////////////
 
 //HauptFenster::HauptFenster( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(-1, -1))

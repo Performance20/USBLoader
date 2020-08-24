@@ -2,12 +2,10 @@
 #include "UsbLoader.h"
 
 
-IMPLEMENT_APP(MyApp)
-
-bool MyApp::OnInit()
+bool USBLoaderApp::OnInit()
 {
 	
-	HauptFenster* usbl = new HauptFenster(wxT("USBLoader"));
+	HauptFenster* usbl = new HauptFenster(wxT("Zündungsmanager"));
 		usbl->Show(true);
 
 	return true;

@@ -1,10 +1,14 @@
 #pragma once
 
-#include <wx/wx.h>
+#include "wx/wx.h"
 
-class MyApp : public wxApp
+class USBLoaderApp : public wxApp
 {
 public:
 	virtual bool OnInit();
+	//bool OnInit() wxOVERRIDE;
 };
+
+wxDECLARE_APP(USBLoaderApp);
+wxIMPLEMENT_APP(USBLoaderApp);
 
