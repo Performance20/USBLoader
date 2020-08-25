@@ -122,13 +122,13 @@ void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 
 	wxStreamToTextRedirector redirect(m_textCtrlAusgabe);
 	fininish = false;
-	//connected = true;
+	connected = true;
 	digiSpark->connect_device();
 
 	if (digiSpark->isConnected())
 	{
 		s << "Verbunden";
-		//led = digiSpark->getLED();
+		led = digiSpark->getLED();
 		if (led > 0)
 				m_checkBox1->SetValue(true);
 		else
