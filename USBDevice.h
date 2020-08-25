@@ -87,5 +87,5 @@ public:
 
 inline bool USBDevice::isConnected()
 {
-	return connected;
+	return this->connected;
 }

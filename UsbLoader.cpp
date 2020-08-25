@@ -118,34 +118,56 @@ HauptFenster::~HauptFenster()
 void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 {
 	wxString m, s;
-	int led;
+	int led = 0;
 
 	wxStreamToTextRedirector redirect(m_textCtrlAusgabe);
 	fininish = false;
-	connected = true;
+	//connected = true;
 	digiSpark->connect_device();
 
 	if (digiSpark->isConnected())
 	{
-		s << "verbunden";
-		led = digiSpark->getLED();
-		if (led)
-			m_checkBox1->SetValue(true);
+		s << "Verbunden";
+		//led = digiSpark->getLED();
+		if (led > 0)
+				m_checkBox1->SetValue(true);
 		else
-			m_checkBox1->SetValue(false);
+			if (!led)
+				m_checkBox1->SetValue(false);
+		connected = true;
 	}
 	else
 	{
-		s << "nicht verbunden";
+		s << "Nicht Verbunden";
 		cout << digiSpark->getLog();
 		cout << digiSpark->print_deviceList();
 		cout << digiSpark->getLog();
+		connected = false;
 	}
 	this->SetStatusText(s, 2);
 	
 	while (fininish == false) {
 		cout << digiSpark->readString();
 		cout << digiSpark->getLog();
+		if (digiSpark->isConnected())
+		{
+			if (connected == false)
+			{
+				connected = true;
+				s << "Verbunden";
+				this->SetStatusText(s, 2);
+			}
+
+		}
+		else
+		{
+			if (connected == true)
+			{
+				connected = false;
+				s << "Nicht Verbunden";
+				this->SetStatusText(s, 2);
+			}
+		}
 		wxYield();
 	}
 	return;

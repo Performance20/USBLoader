@@ -311,7 +311,7 @@ int  USBDevice::readUSBVendor(const unsigned char* data)
 	int status;
 
 	if (connected == true) {
-		//status = libusb_control_transfer(device, (0x01 << 5) | 0x80, 0x01, 0, 0, (unsigned char*) data, 1, 1000);
+		//status = libusb_control_transfer(handle, (0x01 << 5) | 0x80, 0x01, 0, 0, (unsigned char*) data, 1, 1000);
 		status = libusb_control_transfer(handle, LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_RECIPIENT_DEVICE | LIBUSB_ENDPOINT_IN, 
 			REQ_LOGGING, 0, 0, (unsigned char*) data, 1, TIMEOUT);
 
@@ -350,7 +350,7 @@ int USBDevice::USBDevice::setLED(int val)
 
 int USBDevice::setLED_off(void)
 {
-	return setLED(VAL_ONBOARD_LED_OFF);
+	return setLED(VAL_STATE_OFF);
 }
 
 int USBDevice::getLED()
@@ -361,7 +361,7 @@ int USBDevice::getLED()
 	if (connected == true) {
 		//status = libusb_control_transfer(device, (0x01 << 5) | 0x80, 0x01, 0, 0, (unsigned char*) data, 1, 1000);
 		status = libusb_control_transfer(handle, LIBUSB_REQUEST_TYPE_VENDOR | LIBUSB_RECIPIENT_DEVICE | LIBUSB_ENDPOINT_IN,
-			REQ_ONBOARD_LED_STATUS, 0, 0, data, 1, TIMEOUT);
+			REQ_ONBOARD_LED_GET, 0, 0, data, 1, TIMEOUT);
 
 		if (status < 0) {
 			*out << endl << libusb_error_name(status) << endl << ends;
@@ -379,7 +379,7 @@ int USBDevice::getLED()
 
 int USBDevice::setLED_on(void)
 {
-	return setLED(VAL_ONBOARD_LED_ON);
+	return setLED(VAL_STATE_ON);
 }
 
 int  USBDevice::writeUSB(const unsigned char* data)
