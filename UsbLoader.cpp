@@ -83,7 +83,7 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	this->Layout();
 
 	m_statusBar1 = this->CreateStatusBar( 3, wxSTB_SIZEGRIP, wxID_ANY );
-
+	/*
 	m_Gauge = new wxGauge(m_statusBar1, wxID_ANY, 100, wxPoint(5, -1));
 	m_Gauge->SetSize(150, 15);
 	//m_Gauge->CenterOnParent(wxGA_HORIZONTAL | wxGA_SMOOTH | wxGA_VERTICAL);
@@ -94,7 +94,7 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	{
 		wxMessageBox("Could not start Timer!");
 	}
-	
+	*/
 	this->SetStatusText("nicht verbunden", 2);
 
 	this->Centre();
@@ -105,7 +105,6 @@ HauptFenster::HauptFenster(const wxString& title) : wxFrame(NULL, wxID_ANY, titl
 	this->Connect(ID_CLEANLOG, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(HauptFenster::CleanOutputLogClick));
 	this->Connect(ID_TIMER, wxEVT_TIMER, wxTimerEventHandler(HauptFenster::OnTimerEvent));
 
-	digiSpark = new USBDevice();
 }
 
 HauptFenster::~HauptFenster()
@@ -120,12 +119,20 @@ void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 	wxString m, s;
 	int led = 0;
 
+	if (connected == true) // vendor 5824, product 1503
+	{
+		cout << "Device is already connected!!!" << endl << ends;
+		return;
+	}
+		
 	wxStreamToTextRedirector redirect(m_textCtrlAusgabe);
 	fininish = false;
-	connected = true;
-	digiSpark->connect_device();
+	digiSpark = new USBDevice();
 
-	if (digiSpark->isConnected())
+	//digiSpark->connect_device();
+	digiSpark->connect_device_with_search();
+
+	if (digiSpark->isConnected()) // vendor 5824, product 1503
 	{
 		s << "Verbunden";
 		led = digiSpark->getLED();
@@ -143,13 +150,16 @@ void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 		cout << digiSpark->print_deviceList();
 		cout << digiSpark->getLog();
 		connected = false;
+		delete digiSpark;
+		return; // exit no device connected 
 	}
 	this->SetStatusText(s, 2);
-	
+	int k = 0;
 	while (fininish == false) {
-		cout << digiSpark->readString();
 		cout << digiSpark->getLog();
-		if (digiSpark->isConnected())
+		cout << digiSpark->readString();
+	
+	/*	if (digiSpark->isConnected())
 		{
 			if (connected == false)
 			{
@@ -168,7 +178,9 @@ void HauptFenster::trackUSBInterfaceClick(wxCommandEvent& event)
 				this->SetStatusText(s, 2);
 			}
 		}
+*/
 		wxYield();
+		//::wxSleep(1);
 	}
 	return;
 }
