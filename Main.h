@@ -5,8 +5,8 @@
 class USBLoaderApp : public wxApp
 {
 public:
-	virtual bool OnInit();
-	//bool OnInit() wxOVERRIDE;
+	//virtual bool OnInit();
+	bool OnInit() wxOVERRIDE;
 };
 
 wxDECLARE_APP(USBLoaderApp);

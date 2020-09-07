@@ -1,3 +1,50 @@
+#include "wx/wxprec.h"
+
+
+#include "wx/app.h"
+#include "wx/grid.h"
+#include "wx/treectrl.h"
+#include "wx/spinctrl.h"
+#include "wx/artprov.h"
+#include "wx/clipbrd.h"
+#include "wx/colordlg.h"
+#include "wx/wxhtml.h"
+#include "wx/imaglist.h"
+#include "wx/dataobj.h"
+#include "wx/dcclient.h"
+#include "wx/bmpbuttn.h"
+#include "wx/menu.h"
+#include "wx/toolbar.h"
+#include "wx/msgdlg.h"
+#include "wx/textdlg.h"
+
+
+
+
+#include "wx/wx.h"
+#include "wx/artprov.h"
+#include "wx/xrc/xmlres.h"
+#include "wx/string.h"
+#include "wx/textctrl.h"
+#include "wx/gdicmn.h"
+#include "wx/font.h"
+#include "wx/colour.h"
+#include "wx/settings.h"
+#include "wx/bitmap.h"
+#include "wx/image.h"
+#include "wx/icon.h"
+#include "wx/button.h"	
+#include "wx/sizer.h"
+#include "wx/wrapsizer.h"
+#include "wx/statusbr.h"
+#include "wx/frame.h"
+#include "wx/panel.h"
+#include "wx/aui/aui.h"
+
+#include "libusb.h"
+#include "string.h"
+//#include <iostream.h>
+
 #include "UsbLoader.h" 
 
 

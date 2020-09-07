@@ -9,8 +9,26 @@
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
-
 #include "wx/wx.h"
+
+#include "wx/app.h"
+#include "wx/grid.h"
+#include "wx/treectrl.h"
+#include "wx/spinctrl.h"
+#include "wx/artprov.h"
+#include "wx/clipbrd.h"
+#include "wx/colordlg.h"
+#include "wx/wxhtml.h"
+#include "wx/imaglist.h"
+#include "wx/dataobj.h"
+#include "wx/dcclient.h"
+#include "wx/bmpbuttn.h"
+#include "wx/menu.h"
+#include "wx/toolbar.h"
+#include "wx/msgdlg.h"
+#include "wx/textdlg.h"
+
+
 #include "wx/artprov.h"
 #include "wx/xrc/xmlres.h"
 #include "wx/string.h"
@@ -28,7 +46,7 @@
 #include "wx/statusbr.h"
 #include "wx/frame.h"
 #include "wx/panel.h"
-//#include "wx/aui/aui.h"
+#include "wx/aui/aui.h"
 
 #include "libusb.h"
 #include "string.h"
@@ -37,14 +55,7 @@
 
 using namespace std;
 
-/*//////////////////////////////////////////////////////////////////////////
-const int ID_USBINT = wxID_HIGHEST + 1;
-const int ID_EXIT = wxID_HIGHEST + 2;
-const int ID_CHECK_LED = wxID_HIGHEST + 3;
-const int ID_TIMER = wxID_HIGHEST + 4;
-const int ID_CLEANLOG = wxID_HIGHEST + 5;
-
-*///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 /// Class HauptFenster
 ///////////////////////////////////////////////////////////////////////////////
 class HauptFenster : public wxFrame
